@@ -62,7 +62,7 @@ jobs:
       
       - name: Debug
         if: ${{ always() }}
-        uses: mxschmitt/action-tmate@v3
+        uses: owenthereal/action-upterm@v1
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
