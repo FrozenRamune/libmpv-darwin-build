@@ -9,11 +9,6 @@
     url = "https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz";
     sha256 = "57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082";
   };
-  fftools-ffi = {
-    version = "106d5813";
-    url = "https://github.com/moffatman/fftools-ffi/archive/106d58138071eba66c7d814f6573029c712cd597.tar.gz";
-    sha256 = "4577bb410978f5026270390aa65ebf0307250f3f5b0adf5353e060a5a3f4ee25";
-  };
   freetype = {
     version = "2.13.2";
     url = "https://downloads.sourceforge.net/project/freetype/freetype2/2.13.2/freetype-2.13.2.tar.xz";
