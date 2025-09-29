@@ -18,13 +18,61 @@ let
     name = "${pname}-source-${version}";
     inherit (packageLock) url sha256;
   };
-  patchedSource = pkgs.runCommand "${pname}-patched-source-${version}" { } ''
-    cp -r ${src} src
-    export src=$PWD/src
-    chmod -R 777 $src
 
-    cp -r $src $out
-  '';
+  /*
+  fetchDependency = { owner, repoName }: builtins.fetchGit {
+    url = "https://github.com/${owner}/${repoName}.git";
+    ref = "main";
+    rev = builtins.readFile ${src}/ExternalRevisions/${repoName}_repo_revision;
+  };
+
+  cereal = fetchDependency {
+    owner = "USCiLab";
+    repoName = "cereal";
+  };
+  vulkanHeaders = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "Vulkan-Headers";
+  };
+  spirvCross = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "SPIRV-Cross";
+  };
+  spirvTools = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "SPIRV-Tools";
+  };
+  spirvHeaders = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "SPIRV-Headers";
+  };
+  vulkanTools = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "Vulkan-Tools";
+  };
+  volk = fetchDependency {
+    owner = "KhronosGroup";
+    repoName = "Volk";
+  };
+  */
+
+  patchedSource = pkgs.runCommand "${pname}-patched-source-${version}"
+    {
+      nativeBuildInputs = [
+        pkgs.git
+      ];
+    }
+    ''
+      cp -r ${src} src
+      export src=$PWD/src
+      chmod -R 777 $src
+
+      cd $src
+      # ./fetchDependencies --$(echo ${os} | sed 's/simulator$/sim/')
+      cd -
+
+      cp -r $src $out
+    '';
 in
 
 pkgs.stdenvNoCC.mkDerivation {
@@ -40,15 +88,11 @@ pkgs.stdenvNoCC.mkDerivation {
     pkgs.pkg-config
   ];
   configurePhase = ''
-    pwd
-    echo $src
-    ls
-    cd $src
-    ./fetchDependencies --${os}
     meson setup build $src \
       --native-file ${nativeFile} \
       --cross-file ${crossFile} \
-      --prefix=$out
+      --prefix=$out \
+      -DMVK_CONFIG_LOG_LEVEL=1
   '';
   buildPhase = ''
     meson compile -vC build $(basename $src)
