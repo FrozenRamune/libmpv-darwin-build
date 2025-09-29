@@ -79,4 +79,29 @@
     url = "https://www.freedesktop.org/software/uchardet/releases/uchardet-0.0.8.tar.xz";
     sha256 = "e97a60cfc00a1c147a674b097bb1422abd9fa78a2d9ce3f3fdcc2e78a34ac5f0";
   };
+  libplacebo = {
+    version = "7.351.0";
+    url = "https://github.com/haasn/libplacebo/archive/refs/tags/v7.351.0.tar.gz";
+    sha256 = "1inpbi72zrg6q5g2dpbk0qylk1jqpkz6dnnxdy8fcxlv3m858sbi";
+  };
+  libshaderc = {
+    version = "2025.4";
+    url =  "https://github.com/google/shaderc/archive/refs/tags/v2025.4.tar.gz";
+    sha256 = "1bsg0qxif9smxrxjg91lga5zra3l6di09q5af129bs5c29kgp2ca";
+  };
+  libvulkan_headers = {
+    version = "1.4.328";
+    url = "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v1.4.328.tar.gz";
+    sha256 = "";
+  };
+  libvulkan_loader = {
+    version = "1.4.328";
+    url = "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.4.328.tar.gz";
+    sha256 = "";
+  };
+  libmoltenvk = {
+    version = "1.4.0";
+    url  = "https://github.com/KhronosGroup/MoltenVK/archive/refs/tags/v1.4.0.tar.gz";
+    sha256 = "01j37njbm7kyb0d2fsgnpwwwkz89kj0r62i6zrrx8g7f4vwswx7w";
+  };
 }
