@@ -58,7 +58,7 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.version }}
           echo \"$VERSION\" > nix/utils/default/version.nix
-          nix build -v
+          nix build -v --print-build-logs
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
