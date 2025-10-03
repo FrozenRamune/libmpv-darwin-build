@@ -23,9 +23,11 @@ let
   nativeFile = callPackage ../../utils/native-file/default.nix { };
   crossFile = callPackage ../../utils/cross-file/default.nix { };
   xctoolchainLipo = callPackage ../../utils/xctoolchain/lipo.nix { };
+  xctoolchainSwiftc = callPackage ../../utils/xctoolchain/swiftc.nix { };
   ffmpeg = callPackage ../mk-pkg-ffmpeg/default.nix { };
   uchardet = callPackage ../mk-pkg-uchardet/default.nix { };
   libass = callPackage ../mk-pkg-libass/default.nix { };
+  libplacebo = callPackage ../mk-pkg-libplacebo/default.nix { };
 
   nativeBuildInputs = [
     pkgs.meson
@@ -33,6 +35,7 @@ let
     pkgs.pkg-config
     pkgs.python3
     xctoolchainLipo
+    xctoolchainSwiftc
   ];
 
   pname = import ../../utils/name/package.nix name;
@@ -47,6 +50,7 @@ let
 
     cd $src
     patch -p1 <${../../../patches/mpv-fix-missing-objc.patch}
+    patch -p1 <${../../../patches/mpv-demux-mkv.patch}
     if [ "${variant}" == "${variants.audio}" ]; then
       patch -p1 <${../../../patches/mpv-remove-libass.patch}
     fi
@@ -70,7 +74,10 @@ pkgs.stdenvNoCC.mkDerivation {
   enableParallelBuilding = true;
   inherit nativeBuildInputs;
   buildInputs =
-    [ ffmpeg ]
+    [
+      ffmpeg
+      libplacebo
+    ]
     ++ pkgs.lib.optionals (variant == "video") [
       uchardet
       libass
@@ -112,6 +119,7 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dalsa=disabled `# ALSA audio output`
       -Daudiounit=disabled `# AudioUnit output for iOS`
       -Dcoreaudio=disabled `# CoreAudio audio output`
+      -Davfoundation=disabled `# AVFoundation audio output`
       -Djack=disabled `# JACK audio output`
       -Dopenal=disabled `# OpenAL audio output`
       -Dopensles=disabled `# OpenSL ES audio output`
@@ -207,6 +215,8 @@ pkgs.stdenvNoCC.mkDerivation {
 
       `# video output features`
       -Dcocoa=enabled `# Cocoa` `# BUG: required in audio mode since v0.36.0`
+
+      -Dswift-build=enabled
     )
 
     MACOS_VIDEO_OPTIONS=(
