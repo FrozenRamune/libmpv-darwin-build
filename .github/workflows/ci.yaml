@@ -59,6 +59,10 @@ jobs:
           VERSION=${{ steps.version.outputs.version }}
           echo \"$VERSION\" > nix/utils/default/version.nix
           nix build -v
+      
+      - name: Debug
+        if: ${{ always() }}
+        uses: owenthereal/action-upterm@v1
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
